@@ -18,9 +18,13 @@ public class Cart implements Serializable {
     @Column(name = "cart_id")
     private Long id;
 
-    private String userName;
+    private String cartName;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.PERSIST}, fetch = FetchType.EAGER)
+    @OneToOne(cascade = CascadeType.ALL)
+//    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(
             name = "bought_items",
             joinColumns = @JoinColumn(name = "cart_id"),
@@ -31,9 +35,10 @@ public class Cart implements Serializable {
     public Cart() {
     }
 
-    public Cart(Long id, String userName, Set<Item> items) {
+    public Cart(Long id, String cartName, User user, Set<Item> items) {
         this.id = id;
-        this.userName = userName;
+        this.cartName = cartName;
+        this.user = user;
         this.items = items;
     }
 
@@ -45,20 +50,23 @@ public class Cart implements Serializable {
         this.id = id;
     }
 
-    public String getUserName() {
-        return userName;
+    public String getCartName() {
+        return cartName;
     }
 
-    public void setUserName(String userName) {
-        this.userName = userName;
+    public void setCartName(String cartName) {
+        this.cartName = cartName;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public Set<Item> getItems() {
-//        Set<Long> itemCode = new HashSet<>();
-//        for(Item item : items){
-//            itemCode.add(item.getId());
-//        }
-//        return itemCode;
         return items;
     }
 
@@ -70,7 +78,8 @@ public class Cart implements Serializable {
     public String toString() {
         return "Cart{" +
                 "id=" + id +
-                ", userName='" + userName + '\'' +
+                ", cartName='" + cartName + '\'' +
+                ", user=" + user +
                 ", items=" + items +
                 '}';
     }

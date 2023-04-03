@@ -46,6 +46,7 @@ public class ItemService {
 
         if(newItem.getId() != null) oldItem.setId(newItem.getId());
         oldItem.setItemName(newItem.getItemName());
+        oldItem.setItemPrice(newItem.getItemPrice());
         oldItem.setCarts(newItem.getCarts());
 
         itemRepository.save(oldItem);

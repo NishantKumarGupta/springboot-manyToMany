@@ -53,7 +53,7 @@ public class CartService {
                 .orElseThrow(() -> new ResourceNotFoundException("No cart found with id : " + newCart.getId()));
 
         if(newCart.getId() != null) oldCart.setId(newCart.getId());
-        oldCart.setUserName(newCart.getUserName());
+        oldCart.setCartName(newCart.getCartName());
 //        Set<Item> itemSet = new HashSet<>();
 //        for(Long itemID : newCart.getItems()){
 //            itemSet.add()

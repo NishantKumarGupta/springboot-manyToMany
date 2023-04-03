@@ -17,16 +17,18 @@ public class Item implements Serializable {
     private Long id;
 
     private String itemName;
+    private Long itemPrice;
 
-    @ManyToMany(mappedBy = "items", fetch = FetchType.EAGER)
+    @ManyToMany(mappedBy = "items", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     Set<Cart> carts;
 
     public Item() {
     }
 
-    public Item(Long id, String itemName, Set<Cart> carts) {
+    public Item(Long id, String itemName, Long itemPrice, Set<Cart> carts) {
         this.id = id;
         this.itemName = itemName;
+        this.itemPrice = itemPrice;
         this.carts = carts;
     }
 
@@ -46,12 +48,15 @@ public class Item implements Serializable {
         this.itemName = itemName;
     }
 
+    public Long getItemPrice() {
+        return itemPrice;
+    }
+
+    public void setItemPrice(Long itemPrice) {
+        this.itemPrice = itemPrice;
+    }
+
     public Set<Cart> getCarts() {
-//        Set<Long> cartCodes = new HashSet<>();
-//        for(Cart cart : carts){
-//            cartCodes.add(cart.getId());
-//        }
-//        return cartCodes;
         return carts;
     }
 
@@ -64,6 +69,7 @@ public class Item implements Serializable {
         return "Item{" +
                 "id=" + id +
                 ", itemName='" + itemName + '\'' +
+                ", itemPrice=" + itemPrice +
                 ", carts=" + carts +
                 '}';
     }
