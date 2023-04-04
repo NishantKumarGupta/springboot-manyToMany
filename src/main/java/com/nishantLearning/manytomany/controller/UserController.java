@@ -26,17 +26,17 @@ public class UserController {
     }
 
     @PostMapping("/")
-    public void createUserController(@RequestBody User newUser){
-        userService.createUser(newUser);
+    public ResponseEntity<String> createUserController(@RequestBody User newUser){
+        return userService.createUser(newUser);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<User> updateUserController(@PathVariable Long id, @RequestBody User newUser){
+    public ResponseEntity<UserDTO> updateUserController(@PathVariable Long id, @RequestBody User newUser){
         return userService.updateUser(id, newUser);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<User> deleteUserController(@PathVariable Long id){
+    public ResponseEntity<UserDTO> deleteUserController(@PathVariable Long id){
         return userService.deleteUser(id);
     }
 }

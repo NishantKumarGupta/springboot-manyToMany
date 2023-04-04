@@ -23,9 +23,6 @@ public class UserService {
     @Autowired
     private UserMapper userMapper;
 
-    @Autowired
-    private CartRepository cartRepository;
-
     public List<UserDTO> getAllUsers(){
         List<User> allFoundUsers = userRepository.findAll();
         List<UserDTO> foundDTO = allFoundUsers.stream()
@@ -40,35 +37,34 @@ public class UserService {
         return userMapper.toDTO(foundUser);
     }
 
-    public void createUser(User newUser){
+    public ResponseEntity<String> createUser(User newUser){
         Cart cart = new Cart();
         cart.setCartName(newUser.getCart().getCartName());
-         cart.setUser(newUser);
+        cart.setUser(newUser);
         newUser.setCart(cart);
 
-        cartRepository.save(cart);
         userRepository.save(newUser);
+        return ResponseEntity.ok("The user has been created successfully with the name : " + newUser.getUserName());
     }
 
-    public ResponseEntity<User> updateUser(Long id, User newUser){
+    public ResponseEntity<UserDTO> updateUser(Long id, User newUser){
         User oldUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No user found having id" + id));
 
         if(newUser.getId() != null) oldUser.setId(newUser.getId());
         oldUser.setUserName(newUser.getUserName());
         oldUser.setPassword(newUser.getPassword());
-        oldUser.setMobileNo(newUser.getMobileNo());
-        oldUser.setCart(newUser.getCart());
+        if(newUser.getMobileNo() != null) oldUser.setMobileNo(newUser.getMobileNo());
+        if(newUser.getCart() != null) oldUser.setCart(newUser.getCart());
         userRepository.save(oldUser);
-        return ResponseEntity.ok(oldUser);
+        return ResponseEntity.ok(userMapper.toDTO(oldUser));
     }
 
-    public ResponseEntity<User> deleteUser(Long id){
+    public ResponseEntity<UserDTO> deleteUser(Long id){
         User foundUser = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("No user found having id" + id));
         userRepository.delete(foundUser);
-        return ResponseEntity.ok(foundUser);
+        return ResponseEntity.ok(userMapper.toDTO(foundUser));
     }
-
 }
 

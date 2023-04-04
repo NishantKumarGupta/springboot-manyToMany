@@ -39,6 +39,11 @@ public class ItemController {
         return itemService.updateItem(id, updateItem);
     }
 
+    @PutMapping("/{itemID}/{cartID}")
+    public ResponseEntity<Item> addItemToCartController(@PathVariable Long itemID, @PathVariable Long cartID){
+        return itemService.addItemToCart(itemID, cartID);
+    }
+
     //Delete an item
     @DeleteMapping("/{id}")
     public ResponseEntity<Item> deleteItemController(@PathVariable Long id){
